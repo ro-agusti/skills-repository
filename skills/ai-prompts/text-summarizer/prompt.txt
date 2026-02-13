@@ -1,0 +1,11 @@
+# Prompt para text-summarizer
+
+## System Prompt
+[Tu prompt de sistema aquí]
+
+## User Prompt Template
+[Template de prompt para el usuario]
+
+## Variables
+- {variable1}: descripción
+- {variable2}: descripción

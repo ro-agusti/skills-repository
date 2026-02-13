@@ -1,0 +1,12 @@
+{
+  "name": "my-pipeline",
+  "type": "hybrid",
+  "version": "1.0.0",
+  "description": "Complete analysis pipeline",
+  "author": "",
+  "created": "2026-02-14T07:45:48.916572",
+  "updated": "2026-02-14T07:45:48.916575",
+  "tags": [],
+  "dependencies": [],
+  "status": "active"
+}

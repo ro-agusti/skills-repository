@@ -1,0 +1,12 @@
+{
+  "name": "my-processor",
+  "type": "code",
+  "version": "1.0.0",
+  "description": "Processes CSV data",
+  "author": "",
+  "created": "2026-02-14T07:45:23.836083",
+  "updated": "2026-02-14T07:45:23.836086",
+  "tags": [],
+  "dependencies": [],
+  "status": "active"
+}

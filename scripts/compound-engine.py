@@ -1,0 +1,305 @@
+#!/usr/bin/env python3
+"""
+Compound Engine - Sistema para combinar múltiples skills en workflows complejos
+"""
+import yaml
+import json
+from pathlib import Path
+from typing import List, Dict, Any, Optional, Callable
+from dataclasses import dataclass
+import importlib.util
+
+
+@dataclass
+class SkillNode:
+    """Representa un skill en una cadena"""
+    name: str
+    path: Path
+    skill_type: str
+    config: Dict[str, Any] = None
+    
+    def __post_init__(self):
+        if self.config is None:
+            self.config = {}
+
+
+class SkillExecutor:
+    """Ejecutor individual de skills"""
+    
+    def __init__(self, skill_path: Path):
+        self.skill_path = skill_path
+        self.metadata = self._load_metadata()
+        
+    def _load_metadata(self) -> dict:
+        """Carga metadata del skill"""
+        metadata_file = self.skill_path / 'metadata.json'
+        if metadata_file.exists():
+            with open(metadata_file) as f:
+                return json.load(f)
+        return {}
+    
+    def execute(self, input_data: Any, **kwargs) -> Any:
+        """Ejecuta el skill"""
+        skill_type = self.metadata.get('type', 'code')
+        
+        if skill_type == 'ai-prompts':
+            return self._execute_prompt(input_data, **kwargs)
+        elif skill_type in ['code', 'hybrid']:
+            return self._execute_code(input_data, **kwargs)
+        else:
+            raise ValueError(f"Tipo de skill no soportado: {skill_type}")
+    
+    def _execute_prompt(self, input_data: Any, **kwargs) -> str:
+        """Ejecuta un skill de tipo AI prompt"""
+        prompt_file = self.skill_path / 'prompt.txt'
+        
+        if not prompt_file.exists():
+            raise FileNotFoundError(f"No se encontró prompt.txt en {self.skill_path}")
+        
+        prompt_template = prompt_file.read_text()
+        
+        # Reemplazar variables
+        variables = {'input': input_data, **kwargs}
+        prompt = prompt_template
+        for key, value in variables.items():
+            prompt = prompt.replace(f"{{{key}}}", str(value))
+        
+        # Aquí se integraría con la API de Anthropic o similar
+        # Por ahora retornamos el prompt procesado
+        return {
+            'prompt': prompt,
+            'input': input_data,
+            'metadata': self.metadata
+        }
+    
+    def _execute_code(self, input_data: Any, **kwargs) -> Any:
+        """Ejecuta un skill de tipo código"""
+        # Buscar el archivo Python principal
+        python_files = list(self.skill_path.glob('*.py'))
+        
+        if not python_files:
+            raise FileNotFoundError(f"No se encontró archivo .py en {self.skill_path}")
+        
+        module_file = python_files[0]
+        
+        # Cargar el módulo dinámicamente
+        spec = importlib.util.spec_from_file_location("skill_module", module_file)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        
+        # Buscar función execute
+        if hasattr(module, 'execute'):
+            return module.execute(input=input_data, **kwargs)
+        else:
+            raise AttributeError(f"El módulo no tiene función 'execute'")
+
+
+class SkillChain:
+    """Cadena de skills que se ejecutan secuencialmente"""
+    
+    def __init__(self, skill_paths: List[str], base_dir: Path = None):
+        self.base_dir = base_dir or Path(__file__).parent.parent
+        self.skills = []
+        
+        for path in skill_paths:
+            skill_path = self.base_dir / path
+            if not skill_path.exists():
+                raise FileNotFoundError(f"Skill no encontrado: {skill_path}")
+            
+            executor = SkillExecutor(skill_path)
+            self.skills.append(executor)
+    
+    def execute(self, initial_input: Any, **kwargs) -> Any:
+        """Ejecuta la cadena completa de skills"""
+        current_data = initial_input
+        results = []
+        
+        for i, skill in enumerate(self.skills):
+            print(f"Ejecutando skill {i+1}/{len(self.skills)}: {skill.metadata.get('name')}")
+            
+            try:
+                result = skill.execute(current_data, **kwargs)
+                results.append({
+                    'skill': skill.metadata.get('name'),
+                    'result': result,
+                    'status': 'success'
+                })
+                current_data = result
+            except Exception as e:
+                results.append({
+                    'skill': skill.metadata.get('name'),
+                    'error': str(e),
+                    'status': 'error'
+                })
+                raise
+        
+        return {
+            'final_output': current_data,
+            'chain_results': results
+        }
+
+
+class SkillPipeline:
+    """Pipeline complejo con branching, condicionales, y parallel execution"""
+    
+    def __init__(self, config_file: Path):
+        self.config = self._load_config(config_file)
+        self.base_dir = Path(__file__).parent.parent
+        
+    def _load_config(self, config_file: Path) -> dict:
+        """Carga configuración del pipeline desde YAML"""
+        with open(config_file) as f:
+            return yaml.safe_load(f)
+    
+    def execute(self, input_data: Any) -> Any:
+        """Ejecuta el pipeline completo"""
+        steps = self.config.get('steps', [])
+        current_data = input_data
+        context = {'input': input_data}
+        
+        for step in steps:
+            step_type = step.get('type', 'execute')
+            
+            if step_type == 'execute':
+                current_data = self._execute_step(step, current_data, context)
+            elif step_type == 'conditional':
+                current_data = self._execute_conditional(step, current_data, context)
+            elif step_type == 'parallel':
+                current_data = self._execute_parallel(step, current_data, context)
+            
+            # Guardar en contexto
+            if 'output_var' in step:
+                context[step['output_var']] = current_data
+        
+        return current_data
+    
+    def _execute_step(self, step: dict, data: Any, context: dict) -> Any:
+        """Ejecuta un paso individual"""
+        skill_path = self.base_dir / step['skill']
+        executor = SkillExecutor(skill_path)
+        
+        # Preparar kwargs desde el contexto
+        kwargs = {}
+        if 'params' in step:
+            for key, value in step['params'].items():
+                # Si el valor es una referencia al contexto
+                if isinstance(value, str) and value.startswith('$'):
+                    var_name = value[1:]
+                    kwargs[key] = context.get(var_name, value)
+                else:
+                    kwargs[key] = value
+        
+        return executor.execute(data, **kwargs)
+    
+    def _execute_conditional(self, step: dict, data: Any, context: dict) -> Any:
+        """Ejecuta un bloque condicional"""
+        condition = step.get('condition')
+        
+        # Evaluar condición (simplificado, en producción usar algo más seguro)
+        if self._evaluate_condition(condition, data, context):
+            return self._execute_step(step['then'], data, context)
+        elif 'else' in step:
+            return self._execute_step(step['else'], data, context)
+        
+        return data
+    
+    def _execute_parallel(self, step: dict, data: Any, context: dict) -> List[Any]:
+        """Ejecuta múltiples skills en paralelo (simulado)"""
+        results = []
+        
+        for parallel_step in step.get('steps', []):
+            result = self._execute_step(parallel_step, data, context)
+            results.append(result)
+        
+        # Combinar resultados según estrategia
+        combine_strategy = step.get('combine', 'list')
+        
+        if combine_strategy == 'list':
+            return results
+        elif combine_strategy == 'merge':
+            if all(isinstance(r, dict) for r in results):
+                merged = {}
+                for r in results:
+                    merged.update(r)
+                return merged
+        
+        return results
+    
+    def _evaluate_condition(self, condition: str, data: Any, context: dict) -> bool:
+        """Evalúa una condición simple"""
+        # Implementación simplificada
+        # En producción, usar un parser seguro
+        return True
+
+
+class CompoundEngineer:
+    """Herramienta principal para compound engineering"""
+    
+    def __init__(self, base_dir: Path = None):
+        self.base_dir = base_dir or Path(__file__).parent.parent
+    
+    def create_chain(self, name: str, skill_paths: List[str], 
+                     description: str = "") -> Path:
+        """Crea una nueva cadena de skills"""
+        chain_dir = self.base_dir / 'compound' / 'chains' / name
+        chain_dir.mkdir(parents=True, exist_ok=True)
+        
+        config = {
+            'name': name,
+            'description': description,
+            'type': 'chain',
+            'skills': skill_paths,
+            'created': str(Path(__file__).parent.parent)
+        }
+        
+        config_file = chain_dir / 'config.json'
+        with open(config_file, 'w') as f:
+            json.dump(config, indent=2, fp=f)
+        
+        return chain_dir
+    
+    def create_pipeline(self, name: str, config: dict) -> Path:
+        """Crea un nuevo pipeline"""
+        pipeline_dir = self.base_dir / 'compound' / 'pipelines' / name
+        pipeline_dir.mkdir(parents=True, exist_ok=True)
+        
+        config_file = pipeline_dir / 'pipeline.yaml'
+        with open(config_file, 'w') as f:
+            yaml.dump(config, f, default_flow_style=False)
+        
+        return pipeline_dir
+    
+    def load_chain(self, name: str) -> SkillChain:
+        """Carga una cadena existente"""
+        chain_dir = self.base_dir / 'compound' / 'chains' / name
+        config_file = chain_dir / 'config.json'
+        
+        with open(config_file) as f:
+            config = json.load(f)
+        
+        return SkillChain(config['skills'], self.base_dir)
+    
+    def load_pipeline(self, name: str) -> SkillPipeline:
+        """Carga un pipeline existente"""
+        pipeline_dir = self.base_dir / 'compound' / 'pipelines' / name
+        config_file = pipeline_dir / 'pipeline.yaml'
+        
+        return SkillPipeline(config_file)
+
+
+if __name__ == '__main__':
+    # Ejemplo de uso
+    print("Compound Engine - Sistema de composición de skills")
+    print("\nEjemplo de uso:")
+    print("""
+    from compound_engine import SkillChain, CompoundEngineer
+    
+    # Crear una cadena
+    chain = SkillChain([
+        'skills/ai-prompts/analyzer',
+        'skills/code/processor',
+        'skills/hybrid/formatter'
+    ])
+    
+    result = chain.execute("input data")
+    """)

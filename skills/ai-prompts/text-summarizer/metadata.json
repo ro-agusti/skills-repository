@@ -1,0 +1,12 @@
+{
+  "name": "text-summarizer",
+  "type": "ai-prompts",
+  "version": "1.0.0",
+  "description": "Skill para resumir textos de forma concisa",
+  "author": "",
+  "created": "2026-02-13T20:48:22.694167",
+  "updated": "2026-02-13T20:48:22.694177",
+  "tags": [],
+  "dependencies": [],
+  "status": "active"
+}
