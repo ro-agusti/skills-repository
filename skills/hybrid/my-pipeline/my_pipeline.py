@@ -4,30 +4,30 @@ my-pipeline - Skill Module
 
 def execute(**kwargs):
     """
-    Función principal del skill
+    Main skill function
     
     Args:
-        **kwargs: Parámetros del skill
+        **kwargs: Skill parameters
         
     Returns:
-        Resultado de la ejecución
+        Execution result
     """
-    # Implementación
+    # Implementation
     pass
 
 
 class MyPipeline:
-    """Clase principal del skill"""
+    """Main skill class"""
     
     def __init__(self):
         pass
     
     def run(self, *args, **kwargs):
-        """Ejecuta el skill"""
+        """Executes the skill"""
         return execute(**kwargs)
 
 
 if __name__ == "__main__":
-    # Ejemplo de uso
+    # Usage example
     result = execute()
     print(result)

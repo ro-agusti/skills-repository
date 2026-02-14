@@ -1,53 +1,53 @@
-name: "Análisis y Procesamiento de Documentos"
-description: "Pipeline que analiza, extrae información y formatea documentos"
+name: "Document Analysis and Processing"
+description: "Pipeline that analyzes, extracts information, and formats documents"
 version: "1.0.0"
 
-# Variables globales
+# Global variables
 variables:
   output_format: "markdown"
   language: "es"
 
-# Pasos del pipeline
+# Pipeline steps
 steps:
-  # Paso 1: Análisis inicial
-  - name: "Analizar documento"
+  # Step 1: Initial analysis
+  - name: "Analyze document"
     type: execute
     skill: "skills/ai-prompts/document-analyzer"
     params:
       language: "$language"
     output_var: "analysis_result"
   
-  # Paso 2: Condicional basado en tipo de documento
-  - name: "Procesar según tipo"
+  # Step 2: Conditional based on document type
+  - name: "Process based on type"
     type: conditional
     condition: "analysis_result.type == 'technical'"
     then:
-      name: "Procesamiento técnico"
+      name: "Technical processing"
       skill: "skills/code/technical-processor"
       params:
         detail_level: "high"
     else:
-      name: "Procesamiento general"
+      name: "General processing"
       skill: "skills/code/general-processor"
     output_var: "processed_data"
   
-  # Paso 3: Ejecución paralela de extractores
-  - name: "Extracción de información"
+  # Step 3: Parallel execution of extractors
+  - name: "Information extraction"
     type: parallel
     combine: merge
     steps:
-      - name: "Extraer metadatos"
+      - name: "Extract metadata"
         skill: "skills/code/metadata-extractor"
       
-      - name: "Extraer entidades"
+      - name: "Extract entities"
         skill: "skills/ai-prompts/entity-extractor"
       
-      - name: "Extraer keywords"
+      - name: "Extract keywords"
         skill: "skills/hybrid/keyword-extractor"
     output_var: "extracted_info"
   
-  # Paso 4: Formateo final
-  - name: "Formatear salida"
+  # Step 4: Final formatting
+  - name: "Format output"
     type: execute
     skill: "skills/hybrid/formatter"
     params:
@@ -55,13 +55,13 @@ steps:
       metadata: "$extracted_info"
       content: "$processed_data"
 
-# Configuración de error handling
+# Error handling configuration
 error_handling:
-  on_error: "continue"  # o "stop", "retry"
+  on_error: "continue"  # or "stop", "retry"
   retry_count: 3
   retry_delay: 1
 
-# Configuración de logging
+# Logging configuration
 logging:
   level: "info"
   output: "pipeline_logs/"

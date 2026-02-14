@@ -1,21 +1,21 @@
 # my-first-skill
 
-## Descripción
+## Description
 My first analysis skill
 
-## Uso
+## Usage
 
 ```python
-# Ejemplo de uso
+# Usage example
 ```
 
-## Parámetros
+## Parameters
 
-- `param1`: Descripción del parámetro
+- `param1`: Parameter description
 
-## Ejemplos
+## Examples
 
-Ver carpeta `examples/` para casos de uso detallados.
+See the examples/ folder for detailed use cases.
 
 ## Tests
 
@@ -23,12 +23,12 @@ Ver carpeta `examples/` para casos de uso detallados.
 pytest tests/test_my_first_skill.py
 ```
 
-## Notas
+## Notes
 
-- Nota 1
-- Nota 2
+- Note 1
+- Note 2
 
 ## Changelog
 
 ### v1.0.0 - 2026-02-14
-- Versión inicial
+- Initial version

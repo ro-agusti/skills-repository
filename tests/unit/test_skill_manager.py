@@ -1,22 +1,22 @@
 """
-Tests para skill-manager
+Tests for skill-manager
 """
 import pytest
 import json
 from pathlib import Path
 import sys
 
-# Agregar scripts al path
+# Add scripts to path
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / 'scripts'))
 
 from skill_manager import SkillManager
 
 
 class TestSkillManager:
-    """Tests para la clase SkillManager"""
+    """Tests for the SkillManager class"""
     
     def test_create_skill_ai_prompts(self, tmp_path):
-        """Test creación de skill AI"""
+        """Test AI skill creation"""
         manager = SkillManager(base_path=tmp_path)
         
         skill_path = manager.create_skill(
@@ -33,7 +33,7 @@ class TestSkillManager:
         assert (skill_path / 'tests').exists()
     
     def test_create_skill_code(self, tmp_path):
-        """Test creación de skill de código"""
+        """Test code skill creation"""
         manager = SkillManager(base_path=tmp_path)
         
         skill_path = manager.create_skill(
@@ -47,7 +47,7 @@ class TestSkillManager:
         assert len(python_files) > 0
     
     def test_create_duplicate_skill_fails(self, tmp_path):
-        """Test que no se puede crear skill duplicado"""
+        """Test that duplicate skill creation fails"""
         manager = SkillManager(base_path=tmp_path)
         
         manager.create_skill("duplicate", "code")
@@ -56,17 +56,17 @@ class TestSkillManager:
             manager.create_skill("duplicate", "code")
     
     def test_list_skills_empty(self, tmp_path):
-        """Test listar skills cuando no hay ninguno"""
+        """Test listing skills when none exist"""
         manager = SkillManager(base_path=tmp_path)
         skills = manager.list_skills()
         
         assert skills == []
     
     def test_list_skills_with_content(self, tmp_path):
-        """Test listar skills con contenido"""
+        """Test listing skills with content"""
         manager = SkillManager(base_path=tmp_path)
         
-        # Crear varios skills
+        # Create several skills
         manager.create_skill("skill1", "ai-prompts")
         manager.create_skill("skill2", "code")
         
@@ -77,7 +77,7 @@ class TestSkillManager:
         assert any(s['name'] == 'skill2' for s in skills)
     
     def test_validate_skill_valid(self, tmp_path):
-        """Test validación de skill válido"""
+        """Test validation of a valid skill"""
         manager = SkillManager(base_path=tmp_path)
         skill_path = manager.create_skill("valid-skill", "code")
         
@@ -87,10 +87,10 @@ class TestSkillManager:
         assert len(results['errors']) == 0
     
     def test_validate_skill_missing_files(self, tmp_path):
-        """Test validación de skill con archivos faltantes"""
+        """Test validation of a skill with missing files"""
         manager = SkillManager(base_path=tmp_path)
         
-        # Crear directorio pero sin archivos requeridos
+        # Create directory but without required files
         skill_path = tmp_path / 'skills' / 'code' / 'incomplete'
         skill_path.mkdir(parents=True)
         
@@ -100,7 +100,7 @@ class TestSkillManager:
         assert len(results['errors']) > 0
     
     def test_metadata_has_correct_structure(self, tmp_path):
-        """Test que metadata tiene estructura correcta"""
+        """Test that metadata has the correct structure"""
         manager = SkillManager(base_path=tmp_path)
         skill_path = manager.create_skill("metadata-test", "hybrid")
         
@@ -117,7 +117,7 @@ class TestSkillManager:
 
 @pytest.mark.parametrize("skill_type", ['ai-prompts', 'code', 'hybrid'])
 def test_create_all_skill_types(tmp_path, skill_type):
-    """Test parametrizado para todos los tipos de skills"""
+    """Parameterized test for all skill types"""
     manager = SkillManager(base_path=tmp_path)
     
     skill_path = manager.create_skill(

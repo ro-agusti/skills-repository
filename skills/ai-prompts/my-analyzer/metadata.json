@@ -1,0 +1,12 @@
+{
+  "name": "my-analyzer",
+  "type": "ai-prompts",
+  "version": "1.0.0",
+  "description": "Analyzes sentiment in texts",
+  "author": "",
+  "created": "2026-02-14T09:55:50.266144",
+  "updated": "2026-02-14T09:55:50.266147",
+  "tags": [],
+  "dependencies": [],
+  "status": "active"
+}

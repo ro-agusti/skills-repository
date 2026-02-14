@@ -75,7 +75,7 @@ Combination of AI and code:
 ### Initial Setup
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/skills-repository.git
+git clone https://github.com/ro-agusti/skills-repository.git
 cd skills-repository
 
 # Install dependencies

@@ -1,11 +1,11 @@
 """
-Tests for my-pipeline
+Tests for my-analyzer
 """
 import pytest
 from pathlib import Path
 
 # Import the skill
-# from my_pipeline import execute
+
 
 def test_basic_functionality():
     """Test basic functionality"""

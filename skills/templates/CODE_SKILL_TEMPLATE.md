@@ -1,104 +1,104 @@
 # {{SKILL_NAME}}
 
-## Descripción
-[Descripción breve del propósito de este skill]
+## Description
+[Brief description of this skill's purpose]
 
-## Tipo
+## Type
 Code Skill / Python Module
 
-## Instalación
+## Installation
 
 ```bash
-# Si tiene dependencias específicas
+# If it has specific dependencies
 pip install -r requirements.txt
 ```
 
-## Uso Rápido
+## Quick Start
 
 ```python
 from skills.code.{{skill_name}}.{{module_name}} import execute
 
 result = execute(
-    input="datos de entrada",
-    param1="valor1",
-    param2="valor2"
+    input="input data",
+    param1="value1",
+    param2="value2"
 )
 ```
 
 ## API Reference
 
-### Función Principal: `execute()`
+### Main Function: `execute()`
 
 ```python
 def execute(input: Any, **kwargs) -> Any:
     """
-    Ejecuta la funcionalidad principal del skill
+    Executes the main functionality of the skill
     
     Args:
-        input: Datos de entrada principal
-        **kwargs: Parámetros adicionales
+        input: Primary input data
+        **kwargs: Additional parameters
         
     Returns:
-        Resultado procesado
+        Processed result
         
     Raises:
-        ValueError: Si los parámetros son inválidos
-        RuntimeError: Si hay error en procesamiento
+        ValueError: If parameters are invalid
+        RuntimeError: If an error occurs during processing
     """
 ```
 
-### Clase Principal: `{{ClassName}}`
+### Main Class: `{{ClassName}}`
 
 ```python
 class {{ClassName}}:
-    """Clase principal del skill"""
+    """Main skill class"""
     
     def __init__(self, config: dict = None):
         """
-        Inicializa el skill
+        Initializes the skill
         
         Args:
-            config: Configuración opcional
+            config: Optional configuration
         """
         
     def run(self, data: Any) -> Any:
         """
-        Ejecuta el procesamiento
+        Executes the processing logic
         
         Args:
-            data: Datos a procesar
+            data: Data to be processed
             
         Returns:
-            Resultado
+            Resulting output
         """
 ```
 
-## Parámetros
+## Parameters
 
-| Parámetro | Tipo | Descripción | Default |
+| Parameter | Type | Description | Default |
 |-----------|------|-------------|---------|
-| `input` | Any | Datos de entrada | - |
-| `param1` | str | Descripción param1 | "default" |
-| `param2` | int | Descripción param2 | 10 |
+| `input` | Any | Input data | - |
+| `param1` | str | Description of param1 | "default" |
+| `param2` | int | Description of param2 | 10 |
 
-## Ejemplos
+## Examples
 
-### Ejemplo 1: Uso Básico
+### Example 1: Basic Usage
 
 ```python
 from skills.code.{{skill_name}} import execute
 
-data = "ejemplo de datos"
+data = "sample data"
 result = execute(input=data)
 print(result)
 ```
 
 **Output:**
 ```
-Resultado esperado...
+Expected result...
 ```
 
-### Ejemplo 2: Con Configuración
+### Example 2: With Configuration
 
 ```python
 from skills.code.{{skill_name}}.{{module_name}} import {{ClassName}}
@@ -111,7 +111,7 @@ processor = {{ClassName}}(config={
 result = processor.run(data)
 ```
 
-### Ejemplo 3: En Pipeline
+### Example 3: In a Pipeline
 
 ```python
 from scripts.compound_engine import SkillChain
@@ -126,20 +126,20 @@ result = chain.execute(input_data)
 
 ## Testing
 
-### Ejecutar Tests
+### Running Tests
 
 ```bash
-# Todos los tests
+# Run all tests
 pytest skills/code/{{skill_name}}/tests/
 
-# Tests específicos
+# Run specific tests
 pytest skills/code/{{skill_name}}/tests/test_{{module_name}}.py
 
-# Con cobertura
+# Run with coverage report
 pytest --cov=skills/code/{{skill_name}} tests/
 ```
 
-### Estructura de Tests
+### Test Structure
 
 ```python
 import pytest
@@ -165,12 +165,12 @@ class Test{{ClassName}}:
 
 ## Performance
 
-- **Complejidad temporal**: O(n)
-- **Complejidad espacial**: O(1)
+- **Time Complexity**: O(n)
+- **Space Complexity**: O(1)
 - **Throughput**: ~1000 items/sec
-- **Latencia promedio**: <10ms
+- **Average Latency**: <10ms
 
-## Dependencias
+## Dependencies
 
 ```python
 # requirements.txt
@@ -179,9 +179,9 @@ pandas>=2.0.0
 # etc.
 ```
 
-## Integración
+## Integration
 
-### Con otros Skills
+### With Other Skills
 
 ```python
 # Ejemplo de integración
@@ -192,7 +192,7 @@ result1 = skill_execute(data)
 result2 = other_execute(result1)
 ```
 
-### En API
+### Within an API
 
 ```python
 from fastapi import FastAPI
@@ -208,49 +208,49 @@ async def process(data: dict):
 
 ## Troubleshooting
 
-### Error Común 1
-**Problema**: [Descripción]
-**Solución**: [Solución]
+### Common Issue 1
+**Problem**: [Description]
+**Solution**: [Solution]
 
-### Error Común 2
-**Problema**: [Descripción]
-**Solución**: [Solución]
+### Common Issue 3
+**Problem**: [Description]
+**Solution**: [Solution]
 
-## Mejores Prácticas
+## Best Practices
 
-1. **Validación de Input**: Siempre valida los datos de entrada
-2. **Error Handling**: Usa try-except apropiadamente
-3. **Logging**: Usa logging para debugging
-4. **Type Hints**: Usa anotaciones de tipo
+1. **Input Validation**: Always validate input data.
+2. **Error Handling**: Use try-except blocks appropriately.
+3. **Logging**: Utilize logging for debugging purposes.
+4. **Type Hints**: Use type annotations for better code clarity.
 
 ## Roadmap
 
 - [ ] Feature 1
 - [ ] Feature 2
-- [ ] Optimización de performance
+- [ ] Performance optimization
 
 ## Contributing
 
-Ver [CONTRIBUTING.md](../../../CONTRIBUTING.md)
+See [CONTRIBUTING.md](../../../CONTRIBUTING.md)
 
 ## Changelog
 
 ### v1.0.0 - YYYY-MM-DD
-- Versión inicial
+- Initial release
 
 ### v1.1.0 - YYYY-MM-DD
-- Feature nueva
+- New feature added
 - Bug fix
 
-## Licencia
+## License
 
 MIT
 
-## Autor
+## Author
 
-[Tu nombre]
+[Your Name]
 
-## Referencias
+## References
 
-- [Documentación relacionada]
-- [Papers o recursos]
+- [Related documentation]
+- [Papers or resources]
