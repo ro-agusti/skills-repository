@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-Compound Engine - System to combine multiple skills into complex workflows
+Compound Engine - System for combining multiple skills into complex workflows
 """
 import yaml
 import json
 from pathlib import Path
-from typing import List, Dict, Any, Optional, Callable
+from typing import List, Dict, Any, Optional
 from dataclasses import dataclass
 import importlib.util
 
@@ -65,7 +65,7 @@ class SkillExecutor:
             prompt = prompt.replace(f"{{{key}}}", str(value))
         
         # Here you would integrate with Anthropic API or similar
-        # For now, we return the processed prompt
+        # For now, return processed prompt
         return {
             'prompt': prompt,
             'input': input_data,
@@ -73,7 +73,7 @@ class SkillExecutor:
         }
     
     def _execute_code(self, input_data: Any, **kwargs) -> Any:
-        """Execute a code-type skill"""
+        """Execute a code skill"""
         # Find main Python file
         python_files = list(self.skill_path.glob('*.py'))
         
@@ -82,16 +82,16 @@ class SkillExecutor:
         
         module_file = python_files[0]
         
-        # Load the module dynamically
+        # Load module dynamically
         spec = importlib.util.spec_from_file_location("skill_module", module_file)
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
         
-        # Look for 'execute' function
+        # Find execute function
         if hasattr(module, 'execute'):
             return module.execute(input=input_data, **kwargs)
         else:
-            raise AttributeError(f"The module has no 'execute' function")
+            raise AttributeError("Module doesn't have an 'execute' function")
 
 
 class SkillChain:
@@ -110,7 +110,7 @@ class SkillChain:
             self.skills.append(executor)
     
     def execute(self, initial_input: Any, **kwargs) -> Any:
-        """Execute the entire skill chain"""
+        """Execute complete skill chain"""
         current_data = initial_input
         results = []
         
@@ -152,7 +152,7 @@ class SkillPipeline:
             return yaml.safe_load(f)
     
     def execute(self, input_data: Any) -> Any:
-        """Execute the complete pipeline"""
+        """Execute complete pipeline"""
         steps = self.config.get('steps', [])
         current_data = input_data
         context = {'input': input_data}
@@ -174,7 +174,7 @@ class SkillPipeline:
         return current_data
     
     def _execute_step(self, step: dict, data: Any, context: dict) -> Any:
-        """Execute a single step"""
+        """Execute individual step"""
         skill_path = self.base_dir / step['skill']
         executor = SkillExecutor(skill_path)
         
@@ -182,7 +182,7 @@ class SkillPipeline:
         kwargs = {}
         if 'params' in step:
             for key, value in step['params'].items():
-                # If value is a reference to context
+                # If value is a context reference
                 if isinstance(value, str) and value.startswith('$'):
                     var_name = value[1:]
                     kwargs[key] = context.get(var_name, value)
@@ -192,15 +192,10 @@ class SkillPipeline:
         return executor.execute(data, **kwargs)
     
     def _execute_conditional(self, step: dict, data: Any, context: dict) -> Any:
-        """Execute a conditional block"""
-        condition = step.get('condition')
-        
-        # Evaluate condition (simplified, in production use a safer method)
-        if self._evaluate_condition(condition, data, context):
+        """Execute conditional block"""
+        # Simplified implementation
+        if 'then' in step:
             return self._execute_step(step['then'], data, context)
-        elif 'else' in step:
-            return self._execute_step(step['else'], data, context)
-        
         return data
     
     def _execute_parallel(self, step: dict, data: Any, context: dict) -> List[Any]:
@@ -224,75 +219,14 @@ class SkillPipeline:
                 return merged
         
         return results
-    
-    def _evaluate_condition(self, condition: str, data: Any, context: dict) -> bool:
-        """Evaluate a simple condition"""
-        # Simplified implementation
-        # In production, use a safe parser
-        return True
-
-
-class CompoundEngineer:
-    """Main tool for compound engineering"""
-    
-    def __init__(self, base_dir: Path = None):
-        self.base_dir = base_dir or Path(__file__).parent.parent
-    
-    def create_chain(self, name: str, skill_paths: List[str], 
-                     description: str = "") -> Path:
-        """Create a new skill chain"""
-        chain_dir = self.base_dir / 'compound' / 'chains' / name
-        chain_dir.mkdir(parents=True, exist_ok=True)
-        
-        config = {
-            'name': name,
-            'description': description,
-            'type': 'chain',
-            'skills': skill_paths,
-            'created': str(Path(__file__).parent.parent)
-        }
-        
-        config_file = chain_dir / 'config.json'
-        with open(config_file, 'w') as f:
-            json.dump(config, indent=2, fp=f)
-        
-        return chain_dir
-    
-    def create_pipeline(self, name: str, config: dict) -> Path:
-        """Create a new pipeline"""
-        pipeline_dir = self.base_dir / 'compound' / 'pipelines' / name
-        pipeline_dir.mkdir(parents=True, exist_ok=True)
-        
-        config_file = pipeline_dir / 'pipeline.yaml'
-        with open(config_file, 'w') as f:
-            yaml.dump(config, f, default_flow_style=False)
-        
-        return pipeline_dir
-    
-    def load_chain(self, name: str) -> SkillChain:
-        """Load an existing chain"""
-        chain_dir = self.base_dir / 'compound' / 'chains' / name
-        config_file = chain_dir / 'config.json'
-        
-        with open(config_file) as f:
-            config = json.load(f)
-        
-        return SkillChain(config['skills'], self.base_dir)
-    
-    def load_pipeline(self, name: str) -> SkillPipeline:
-        """Load an existing pipeline"""
-        pipeline_dir = self.base_dir / 'compound' / 'pipelines' / name
-        config_file = pipeline_dir / 'pipeline.yaml'
-        
-        return SkillPipeline(config_file)
 
 
 if __name__ == '__main__':
-    # Example usage
+    # Usage example
     print("Compound Engine - Skill composition system")
-    print("\nExample usage:")
+    print("\nUsage example:")
     print("""
-    from compound_engine import SkillChain, CompoundEngineer
+    from compound_engine import SkillChain
     
     # Create a chain
     chain = SkillChain([

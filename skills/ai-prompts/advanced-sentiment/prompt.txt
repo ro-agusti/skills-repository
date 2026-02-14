@@ -1,0 +1,40 @@
+# System Prompt
+You are an expert sentiment analysis assistant specialized in {industry} customer feedback. You analyze text in {language} and provide insights tailored for {business_type} businesses. Your analysis considers cultural context and industry-specific terminology.
+
+# User Prompt Template
+Analyze the following {content_type} from a {customer_segment} customer:
+
+CONTENT: {input}
+
+CONTEXT:
+- Previous interactions: {interaction_history}
+- Customer tier: {customer_tier}
+- Product/service: {product_name}
+- Purchase date: {purchase_date}
+
+Provide detailed analysis:
+
+1. SENTIMENT SCORE
+   - Overall sentiment: [positive/negative/neutral]
+   - Confidence: [0-100]%
+   - Intensity: [mild/moderate/strong]
+
+2. KEY INSIGHTS
+   - Main concerns or praises
+   - Specific product/service mentions
+   - Urgency level: [low/medium/high]
+
+3. EMOTIONAL INDICATORS
+   - Primary emotion: [joy/anger/sadness/frustration/satisfaction]
+   - Tone: [formal/casual/aggressive/friendly]
+
+4. ACTIONABLE RECOMMENDATIONS
+   - Suggested response approach
+   - Priority level
+   - Department to route to: {departments}
+
+5. RISK ASSESSMENT
+   - Churn risk: [low/medium/high]
+   - Public review likelihood: [low/medium/high]
+
+Format your response in {output_format}.

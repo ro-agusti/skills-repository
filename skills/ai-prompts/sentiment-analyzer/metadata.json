@@ -1,0 +1,12 @@
+{
+  "name": "sentiment-analyzer",
+  "type": "ai-prompts",
+  "version": "1.0.0",
+  "description": "",
+  "author": "",
+  "created": "2026-02-14T12:13:20.964618",
+  "updated": "2026-02-14T12:13:20.964621",
+  "tags": [],
+  "dependencies": [],
+  "status": "active"
+}
