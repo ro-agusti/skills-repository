@@ -1,0 +1,12 @@
+{
+  "name": "advanced-sentiment",
+  "type": "ai-prompts",
+  "version": "1.0.0",
+  "description": "",
+  "author": "",
+  "created": "2026-02-14T13:36:34.137449",
+  "updated": "2026-02-14T13:36:34.137452",
+  "tags": [],
+  "dependencies": [],
+  "status": "active"
+}

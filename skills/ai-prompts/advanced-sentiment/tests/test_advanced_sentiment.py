@@ -1,5 +1,5 @@
 """
-Tests for my-analyzer
+Tests for advanced-sentiment
 """
 import pytest
 from pathlib import Path
