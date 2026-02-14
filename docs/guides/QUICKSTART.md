@@ -13,7 +13,7 @@ This guide will help you start using the skills repository in less than 5 minute
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/skills-repository.git
+git clone https://github.com/ro-agusti/skills-repository.git
 cd skills-repository
 ```
 

@@ -1,24 +1,24 @@
-# Ejemplos de uso - text-summarizer
+# Usage Examples - text-summarizer
 
-## Ejemplo 1: Uso básico
+## Example 1: Basic usage
 
 ```python
 # Código de ejemplo
 ```
 
-### Resultado esperado
+### Expected result
 ```
-Salida esperada
+Expected output
 ```
 
-## Ejemplo 2: Uso avanzado
+## Example 2: Advanced usage
 
 ```python
-# Código de ejemplo avanzado
+# Advanced example code
 ```
 
-## Ejemplo 3: Integración
+## Example 3: Integration
 
 ```python
-# Ejemplo de integración con otros skills
+# Integration example with other skills
 ```

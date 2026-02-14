@@ -1,10 +1,10 @@
-# Prompt for my-first-skill
+# Prompt for my-analyzer
 
 ## System Prompt
 [Your system prompt here]
 
 ## User Prompt Template
-[User prompt template]
+[Template for user prompt]
 
 ## Variables
 - {variable1}: description

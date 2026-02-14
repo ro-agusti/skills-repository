@@ -2,7 +2,7 @@
   "name": "text-summarizer",
   "type": "ai-prompts",
   "version": "1.0.0",
-  "description": "Skill para resumir textos de forma concisa",
+  "description": "Skill to summarize texts concisely",
   "author": "",
   "created": "2026-02-13T20:48:22.694167",
   "updated": "2026-02-13T20:48:22.694177",

@@ -1,7 +1,7 @@
-# my-pipeline
+# my-analyzer
 
 ## Description
-Complete analysis pipeline
+Analyzes sentiment in texts
 
 ## Usage
 
@@ -20,7 +20,7 @@ See `examples/` folder for detailed use cases.
 ## Tests
 
 ```bash
-pytest tests/test_my_pipeline.py
+pytest tests/test_my_analyzer.py
 ```
 
 ## Notes

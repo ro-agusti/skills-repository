@@ -1,65 +1,65 @@
 # {{SKILL_NAME}}
 
-## Descripción
-[Descripción breve del propósito de este skill]
+## Description
+[Brief description of this skill's purpose]
 
-## Tipo
+## Type
 AI Prompt / LLM Skill
 
-## Casos de Uso
-- Caso de uso 1
-- Caso de uso 2
-- Caso de uso 3
+## Use Cases
+- Use case 1
+- Use case 2
+- Use case 3
 
 ## Prompt Template
 
 ### System Prompt
 ```
-[Tu prompt de sistema aquí. Este define el comportamiento y personalidad del asistente]
+[Your system prompt here. This defines the assistant's behavior and personality]
 
-Ejemplo:
-Eres un experto analista de datos. Tu trabajo es analizar datasets y proporcionar
-insights accionables. Siempre proporcionas ejemplos concretos y números específicos.
+Example:
+You are an expert data analyst. Your job is to analyze datasets and provide
+actionable insights. Always provide concrete examples and specific numbers.
 ```
 
 ### User Prompt
 ```
-[Template para el prompt del usuario. Usa {{variables}} para partes dinámicas]
+[User prompt template. Use {{variables}} for dynamic parts]
 
-Ejemplo:
-Analiza el siguiente dataset: {{dataset}}
+Example:
+Analyze the following dataset: {{dataset}}
 
-Enfócate en: {{focus_areas}}
+Focus on: {{focus_areas}}
 
-Proporciona:
-1. Resumen ejecutivo
-2. Hallazgos clave (top {{top_n}})
-3. Recomendaciones
+Provide:
+1. Executive summary
+2. Key findings (top {{top_n}})
+3. Recommendations
 ```
 
 ## Variables
 
-| Variable | Tipo | Descripción | Requerido | Default |
+| Variable | Type | Description | Required | Default |
 |----------|------|-------------|-----------|---------|
-| `dataset` | string | Datos a analizar | ✅ | - |
-| `focus_areas` | string | Áreas de enfoque | ❌ | "general" |
-| `top_n` | int | Número de hallazgos | ❌ | 5 |
+| `dataset` | string | Data to analyze | ✅ | - |
+| `focus_areas` | string | Focus areas | ❌ | "general" |
+| `top_n` | int | Number of findings | ❌ | 5 |
 
-## Ejemplos
+## Examples
 
-### Ejemplo 1: Uso Básico
+### Example 1: Basic Usage
 ```python
 from scripts.compound_engine import SkillExecutor
 
 executor = SkillExecutor('skills/ai-prompts/{{skill_name}}')
 result = executor.execute(
-    input_data="[datos]",
-    focus_areas="ventas, tendencias",
+    input_data="[data]",
+    focus_areas="sales, trends",
     top_n=3
 )
 ```
 
-### Ejemplo 2: En una Cadena
+### Example 2: In a Chain
 ```python
 from scripts.compound_engine import SkillChain
 
@@ -72,14 +72,14 @@ chain = SkillChain([
 result = chain.execute(data_source)
 ```
 
-## Output Esperado
+## Expected Output
 
 ```json
 {
-  "summary": "Resumen del análisis...",
+  "summary": "Analysis summary...",
   "findings": [
     {
-      "title": "Hallazgo 1",
+      "title": "Finding 1",
       "description": "...",
       "impact": "high"
     }
@@ -88,17 +88,17 @@ result = chain.execute(data_source)
 }
 ```
 
-## Mejores Prácticas
+## Best Practices
 
-1. **Pre-procesamiento**: Limpia los datos antes de pasarlos
-2. **Context Window**: Considera el límite de tokens
-3. **Iteración**: Usa múltiples llamadas para datasets grandes
-4. **Validación**: Valida el output con el esquema esperado
+1. **Pre-processing**: Clean the data before passinf it
+2. **Context Window**: Consider the token limit
+3. **Iteration**: Use multiple calls for large datasets
+4. **Validation**: Validate the output against the expected schema
 
-## Dependencias
+## Dependencies
 
-- Ninguna (skill standalone)
-- O: `skills/code/data-validator`
+- None (standalone skill)
+- Or: `skills/code/data-validator`
 
 ## Testing
 
@@ -106,25 +106,25 @@ result = chain.execute(data_source)
 pytest tests/test_{{skill_name}}.py
 ```
 
-## Métricas de Performance
+## Performance Metrics
 
-- Latencia promedio: ~2s
-- Tasa de éxito: 95%
+- Average latency: ~2s
+- Success rate: 95%
 - Token usage: ~500-1000 tokens
 
-## Limitaciones
+## Limitations
 
-- Máximo 10,000 tokens de input
-- Funciona mejor con datos estructurados
-- Requiere contexto en español o inglés
+- Maximum 10,000 input tokens
+- Works best with structured data
+- Requires context in Spanish or English
 
 ## Changelog
 
 ### v1.0.0 - YYYY-MM-DD
-- Versión inicial
+- Initial version
 
 ## Autor
-[Tu nombre]
+[Your name]
 
 ## Licencia
 MIT

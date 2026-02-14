@@ -1,24 +1,24 @@
-# Ejemplos de uso - my-processor
+# Usage Examples - my-processor
 
-## Ejemplo 1: Uso básico
-
-```python
-# Código de ejemplo
-```
-
-### Resultado esperado
-```
-Salida esperada
-```
-
-## Ejemplo 2: Uso avanzado
+## Example 1: Basic Usage
 
 ```python
-# Código de ejemplo avanzado
+# Example code
 ```
 
-## Ejemplo 3: Integración
+### Expected Result
+```
+Expected output
+```
+
+## Example 2: Advanced Usage
 
 ```python
-# Ejemplo de integración con otros skills
+# Advanced example code
+```
+
+## Example 3: Integration
+
+```python
+# Integration example with other skills
 ```

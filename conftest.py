@@ -1,35 +1,35 @@
 """
-Configuración de pytest para el repositorio de skills
+Pytest configuration for the skills repository
 """
 import pytest
 from pathlib import Path
 import sys
 
-# Agregar el directorio raíz al path
+# Add the root directory to the sys.path
 ROOT_DIR = Path(__file__).parent
 sys.path.insert(0, str(ROOT_DIR))
 
 
 @pytest.fixture
 def base_dir():
-    """Fixture que retorna el directorio base del repositorio"""
+    """Fixture that returns the repository's base directory"""
     return ROOT_DIR
 
 
 @pytest.fixture
 def skills_dir(base_dir):
-    """Fixture que retorna el directorio de skills"""
+    """Fixture that returns the skills directory"""
     return base_dir / 'skills'
 
 
 @pytest.fixture
 def sample_skill_data():
-    """Fixture con datos de ejemplo para skills"""
+    """Fixture containing sample data for skills"""
     return {
         'name': 'test-skill',
         'type': 'code',
         'version': '1.0.0',
-        'description': 'Skill de prueba',
+        'description': 'Test skill',
         'author': 'Test Author',
         'tags': ['test', 'example'],
         'status': 'active'
@@ -38,7 +38,7 @@ def sample_skill_data():
 
 @pytest.fixture
 def temp_skill_dir(tmp_path):
-    """Fixture que crea un directorio temporal para skills"""
+    """Fixture that creates a temporary directory for skills"""
     skill_dir = tmp_path / 'test-skill'
     skill_dir.mkdir()
     (skill_dir / 'tests').mkdir()
@@ -47,7 +47,7 @@ def temp_skill_dir(tmp_path):
 
 
 def pytest_configure(config):
-    """Configuración de pytest"""
+    """Pytest configuration and custom marker registration"""
     config.addinivalue_line(
         "markers", "slow: marks tests as slow (deselect with '-m \"not slow\"')"
     )

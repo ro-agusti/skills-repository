@@ -1,17 +1,17 @@
-# Usage Examples - my-first-skill
+# Usage Examples - my-analyzer
 
-## Example 1: Basic usage
+## Example 1: Basic Usage
 
 ```python
-# Código de ejemplo
+# Example code
 ```
 
-### Expected result
+### Expected Result
 ```
 Expected output
 ```
 
-## Example 2: Advanced usage
+## Example 2: Advanced Usage
 
 ```python
 # Advanced example code
